@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: marko.nikolic
+      changes:
+        sqlFile:
+          path: ddl/tender.sql
+          relativeToChangelogFile: true
