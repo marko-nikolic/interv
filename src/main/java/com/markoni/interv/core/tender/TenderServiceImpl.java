@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Transactional
 @Slf4j
 @RequiredArgsConstructor
@@ -23,5 +25,10 @@ public class TenderServiceImpl implements TenderService {
         tenderEntity.setReferenceNumber(String.format("%07d", referenceSequenceNumber));
         tenderRepository.save(tenderEntity);
         return tenderMapper.map(tenderEntity);
+    }
+
+    @Override
+    public Optional<Tender> get(String referenceNumber) {
+        return tenderRepository.findByReferenceNumber(referenceNumber).map(tenderMapper::map);
     }
 }
