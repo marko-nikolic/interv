@@ -1,0 +1,156 @@
+= INTERV tender and offer services
+
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+
+Bellow are provided services for managing tenders and offers.
+
+#For easier testing of API set of initial data is provided. You can find it at the end of this document.#
+
+`Create new Tender`
+
+*All three parameters in body are mandatory*
+
+HTTP request:
+
+include::{snippets}/create-tender/http-request.adoc[]
+
+HTTP response:
+
+include::{snippets}/create-tender/http-response.adoc[]
+
+`Get existing Tender`
+
+_Service for retrieving existing tender based on reference number_
+
+HTTP request:
+
+include::{snippets}/get-tender/http-request.adoc[]
+
+HTTP response:
+
+include::{snippets}/get-tender/http-response.adoc[]
+
+`Search Tenders`
+
+_Service used for filtering and paginating tenders_
+
+None of the parameters are mandatory.
+Default values for page number is *1* and page size is *10*.
+Tenders can be filtered by issuer (*issuerIdNo* request parameter).
+
+HTTP request:
+
+include::{snippets}/search-tenders/http-request.adoc[]
+
+HTTP response:
+
+include::{snippets}/search-tenders/http-response.adoc[]
+
+`Create new Offer`
+
+For creating new offer, parameters *tenderReferenceNumber* and *bidderIdNumber* are mandatory while *note* is not.
+
+HTTP request:
+
+include::{snippets}/create-offer/http-request.adoc[]
+
+HTTP response:
+
+include::{snippets}/create-offer/http-response.adoc[]
+
+`Update existing Offer`
+
+Service used for accepting or rejecting offer.
+Request body contains just one parameter which is mandatory and contains two (enum) values: *ACCEPTED* and *REJECTED*.
+
+There is validation that allow only for offers in status SUBMITTED to be accepted or rejected.
+
+If offer is accepted, all other offers from that tender are rejected, and tender is closed.
+
+HTTP request:
+
+include::{snippets}/update-offer/http-request.adoc[]
+
+HTTP response:
+
+include::{snippets}/update-offer/http-response.adoc[]
+
+`Search Tenders`
+
+_Service used for filtering and paginating offers_
+
+None of the parameters are mandatory.
+Default values for page number is *1* and page size is *10*.
+Tenders can be filtered by bidder (*bidderIdNo* request parameter) or (and) by tender (*tenderRefNo*)
+
+HTTP request:
+
+include::{snippets}/search-offers/http-request.adoc[]
+
+HTTP response:
+
+include::{snippets}/search-offers/http-response.adoc[]
+
+== Initial data
+
+`Tenders`
+
+|===
+|Reference number |Issuer number |Description |Status
+
+|0001
+|CIN112233
+|Construction of houses
+|OPENED
+
+|===
+
+`Issuers`
+
+|===
+|Identification number |Name
+
+|CIN112233
+|InterV
+
+|SRE00000001
+|Construction Stars
+
+|LTI91911911S44
+|IT Guru
+|===
+
+`Bidders`
+
+|===
+|Identification number |Name
+
+|999111999
+|Marko Nikolic Ltd.
+
+|RE32333
+|Mordor Inc.
+
+|SB4435566
+|SB4435566
+|===
+
+`Offers`
+
+|===
+|Reference number |Tender |Bidder |Status
+
+|123
+|0001
+|RE32333
+|SUBMITTED
+
+|456
+|0001
+|SB4435566
+|SUBMITTED
+|===
+
+

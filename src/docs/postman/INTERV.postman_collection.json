@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "74e9fd57-5c22-4e77-bae6-add842421f84",
+		"name": "INTERV",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TENDER",
+			"item": [
+				{
+					"name": "Create new tender",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"issuerIdNumber\": \"CIN112233\",\r\n    \"deadline\": \"2020-08-30\",\r\n    \"description\": \"Tender for contructing new building\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/interv/api/v1/tenders",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"interv",
+								"api",
+								"v1",
+								"tenders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get existing tender",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/interv/api/v1/tenders/0001",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"interv",
+								"api",
+								"v1",
+								"tenders",
+								"0001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search for tenders",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"marko test 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/interv/api/v1/tenders/search?pageSize=1&pageNumber=1&issuerIdNo=CIN112233",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"interv",
+								"api",
+								"v1",
+								"tenders",
+								"search"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "1"
+								},
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "issuerIdNo",
+									"value": "CIN112233"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "OFFERS",
+			"item": [
+				{
+					"name": "Search for offers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"marko test 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/interv/api/v1/offers/search?tenderRefNo=0001&bidderIdNo=RE32333&pageSize=1&pageNumber=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"interv",
+								"api",
+								"v1",
+								"offers",
+								"search"
+							],
+							"query": [
+								{
+									"key": "tenderRefNo",
+									"value": "0001"
+								},
+								{
+									"key": "bidderIdNo",
+									"value": "RE32333"
+								},
+								{
+									"key": "pageSize",
+									"value": "1"
+								},
+								{
+									"key": "pageNumber",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new offer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tenderReferenceNumber\": \"0000001\",\r\n    \"bidderIdNumber\": \"999111999\",\r\n    \"note\": \"We are the best\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/interv/api/v1/offers",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"interv",
+								"api",
+								"v1",
+								"offers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accept offer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"ACCEPTED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/interv/api/v1/offers/696101c1-837a-4a1d-9700-c84ae6266b38",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"interv",
+								"api",
+								"v1",
+								"offers",
+								"696101c1-837a-4a1d-9700-c84ae6266b38"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -2,6 +2,11 @@ package com.markoni.interv.tender;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -11,18 +16,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.markoni.interv.api.tender.command.CreateTenderCommand;
 import com.markoni.interv.api.tender.model.Tender;
 import com.markoni.interv.api.tender.model.TenderStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
 
@@ -30,13 +42,24 @@ import java.time.LocalDate;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ExtendWith({ RestDocumentationExtension.class, SpringExtension.class})
 class TenderEndpointTest {
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
+    private WebApplicationContext context;
+
     private MockMvc mockMvc;
+
+    @BeforeEach
+    public void setUp(RestDocumentationContextProvider restDocumentation) {
+        this.mockMvc = MockMvcBuilders
+            .webAppContextSetup(context)
+            .apply(documentationConfiguration(restDocumentation))
+            .build();
+    }
 
     private String refNo;
 
@@ -54,6 +77,7 @@ class TenderEndpointTest {
         MvcResult res = mockMvc
             .perform(post("/api/v1/tenders").content(objectMapper.writeValueAsString(command)).contentType("application/json"))
             .andExpect(status().isOk())
+            .andDo(document("create-tender", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
             .andReturn();
 
         Tender result = objectMapper.readValue(res.getResponse().getContentAsString(), Tender.class);
@@ -74,6 +98,7 @@ class TenderEndpointTest {
         MvcResult res = mockMvc
             .perform(get("/api/v1/tenders/"+refNo))
             .andExpect(status().isOk())
+            .andDo(document("get-tender", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
             .andReturn();
 
         Tender result = objectMapper.readValue(res.getResponse().getContentAsString(), Tender.class);
@@ -98,6 +123,7 @@ class TenderEndpointTest {
             .perform(getRequest)
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.content[0].issuer.identificationNumber").value("CIN112233"))
+            .andDo(document("search-tenders", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
             .andReturn();
     }
 }

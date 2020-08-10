@@ -2,6 +2,11 @@ package com.markoni.interv.tender;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -15,18 +20,25 @@ import com.markoni.interv.api.tender.model.Offer;
 import com.markoni.interv.api.tender.model.OfferStatus;
 import com.markoni.interv.core.tender.offer.OfferEntity;
 import com.markoni.interv.core.tender.offer.OfferRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
@@ -34,16 +46,27 @@ import java.util.List;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ExtendWith({ RestDocumentationExtension.class, SpringExtension.class})
 public class OfferEndpointTest {
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
-    private MockMvc mockMvc;
+    private OfferRepository offerRepository;
 
     @Autowired
-    private OfferRepository offerRepository;
+    private WebApplicationContext context;
+
+    private MockMvc mockMvc;
+
+    @BeforeEach
+    public void setUp(RestDocumentationContextProvider restDocumentation) {
+        this.mockMvc = MockMvcBuilders
+            .webAppContextSetup(context)
+            .apply(documentationConfiguration(restDocumentation))
+            .build();
+    }
 
     @DisplayName("Test creation of new offer")
     @Test
@@ -59,6 +82,7 @@ public class OfferEndpointTest {
         MvcResult res = mockMvc
             .perform(post("/api/v1/offers").content(objectMapper.writeValueAsString(command)).contentType("application/json"))
             .andExpect(status().isOk())
+            .andDo(document("create-offer", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
             .andReturn();
 
         Offer result = objectMapper.readValue(res.getResponse().getContentAsString(), Offer.class);
@@ -79,6 +103,7 @@ public class OfferEndpointTest {
         MvcResult res = mockMvc
             .perform(put("/api/v1/offers/{refNumber}", "123").content(objectMapper.writeValueAsString(command)).contentType("application/json"))
             .andExpect(status().isOk())
+            .andDo(document("update-offer", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
             .andReturn();
 
         Offer result = objectMapper.readValue(res.getResponse().getContentAsString(), Offer.class);
@@ -109,6 +134,7 @@ public class OfferEndpointTest {
             .perform(getRequest)
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.content[0].bidder.identificationNumber").value("RE32333"))
+            .andDo(document("search-offers", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
             .andReturn();
     }
 }
