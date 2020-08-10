@@ -1,5 +1,6 @@
 package com.markoni.interv.core.tender;
 
+import com.markoni.interv.api.tender.TenderStatus;
 import com.markoni.interv.core.tender.issuer.IssuerEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,8 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,5 +45,9 @@ public class TenderEntity {
     @ManyToOne
     @JoinColumn(name = "issuer_id", nullable = false)
     private IssuerEntity issuer;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status", nullable = false)
+    private TenderStatus status;
 
 }

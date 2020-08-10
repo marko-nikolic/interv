@@ -18,4 +18,6 @@ public class Tender {
     private LocalDate deadline;
 
     private Issuer issuer;
+
+    private TenderStatus status;
 }

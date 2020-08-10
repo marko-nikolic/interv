@@ -19,7 +19,8 @@ CREATE TABLE tender
     description      VARCHAR2(2000 CHAR) NOT NULL,
     reference_number VARCHAR2(50 CHAR)   NOT NULL,
     creation_date    DATE                NOT NULL,
-    deadline         DATE                NOT NULL
+    deadline         DATE                NOT NULL,
+    status           VARCHAR2(20 CHAR)   NOT NULL
 );
 
 ALTER TABLE tender

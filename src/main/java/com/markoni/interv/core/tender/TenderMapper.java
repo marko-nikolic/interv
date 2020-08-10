@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface TenderMapper {
 
     @Mapping(target = "creationDate", expression = "java(java.time.LocalDate.now())")
+    @Mapping(target = "status", expression = "java(com.markoni.interv.api.tender.TenderStatus.OPENED)")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "referenceNumber", ignore = true)
     @Mapping(target = "issuer", ignore = true)

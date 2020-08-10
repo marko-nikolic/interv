@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.markoni.interv.api.tender.CreateTenderCommand;
 import com.markoni.interv.api.tender.Tender;
+import com.markoni.interv.api.tender.TenderStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -59,6 +60,7 @@ class TenderEndpointTest {
         assertNotNull(result.getReferenceNumber());
         assertEquals(result.getDescription(), "Tender for new project");
         assertEquals(result.getCreationDate(), LocalDate.now());
+        assertEquals(result.getStatus(), TenderStatus.OPENED);
 
         refNo = result.getReferenceNumber();
     }
