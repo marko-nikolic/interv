@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * Class used for wrapping search results
  * @param <T> parameter representing content type
@@ -13,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PageResponse<T> {
 
-    private T content;
+    private List<T> content;
 
     private int pageNumber;
 

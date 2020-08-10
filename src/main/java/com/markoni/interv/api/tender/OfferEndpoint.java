@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "api/v1/offers")
@@ -33,7 +33,7 @@ public class OfferEndpoint {
      * @return newly created offer with SUBMITTED STATUS
      */
     @PostMapping
-    public ResponseEntity<Offer> create(@RequestBody CreateOfferCommand cmd) {
+    public ResponseEntity<Offer> create(@RequestBody @Valid CreateOfferCommand cmd) {
         return ResponseEntity.ok(offerService.create(cmd));
     }
 
@@ -44,7 +44,7 @@ public class OfferEndpoint {
      * @return Accepted/Rejected offer
      */
     @PutMapping("{refNumber}")
-    public ResponseEntity<Offer> update(@PathVariable String refNumber, @RequestBody UpdateOfferCommand cmd) {
+    public ResponseEntity<Offer> update(@PathVariable String refNumber, @RequestBody @Valid UpdateOfferCommand cmd) {
         return ResponseEntity.ok(offerService.update(refNumber, cmd));
     }
 
@@ -57,7 +57,7 @@ public class OfferEndpoint {
      * @return Page response filtered by provided parameters
      */
     @GetMapping(path = "search")
-    public ResponseEntity<PageResponse<List<Offer>>> create(OfferQuery query, PageableRequest pageRequest) {
+    public ResponseEntity<PageResponse<Offer>> create(OfferQuery query, PageableRequest pageRequest) {
         return ResponseEntity.ok(offerService.search(query, pageRequest));
     }
 }

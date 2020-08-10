@@ -2,7 +2,10 @@ package com.markoni.interv.api.tender;
 
 import com.markoni.interv.api.tender.command.CreateTenderCommand;
 import com.markoni.interv.api.tender.model.Tender;
+import com.markoni.interv.api.tender.query.TenderQuery;
 import com.markoni.interv.commons.error.NotFoundException;
+import com.markoni.interv.commons.page.PageResponse;
+import com.markoni.interv.commons.page.PageableRequest;
 import com.markoni.interv.core.tender.TenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +47,19 @@ public class TenderEndpoint {
             .get(refNo)
             .map(ResponseEntity::ok)
             .orElseThrow(() -> new NotFoundException("Tender with reference number %s doesn't exist", refNo));
+    }
+
+    /**
+     *
+     * Search existing tender (all, or just for the issuer)
+     *
+     * @param query Query parameter used for filtering tenders based on issuer identification number
+     * @param pageRequest Query parameters used for pagination
+     * @return Page response, filtered by provided parameters
+     */
+    @GetMapping(path = "search")
+    public ResponseEntity<PageResponse<Tender>> create(TenderQuery query, PageableRequest pageRequest) {
+        return ResponseEntity.ok(tenderService.search(query, pageRequest));
     }
 
 }

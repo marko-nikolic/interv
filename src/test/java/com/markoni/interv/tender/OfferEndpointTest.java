@@ -105,7 +105,7 @@ public class OfferEndpointTest {
             .param("pageSize", "5")
             .param("bidderIdNo", "RE32333");
 
-        MvcResult res = mockMvc
+        mockMvc
             .perform(getRequest)
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.content[0].bidder.identificationNumber").value("RE32333"))

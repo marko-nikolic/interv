@@ -4,6 +4,7 @@ import com.markoni.interv.api.tender.command.CreateOfferCommand;
 import com.markoni.interv.api.tender.command.UpdateOfferCommand;
 import com.markoni.interv.api.tender.model.Offer;
 import com.markoni.interv.api.tender.model.OfferStatus;
+import com.markoni.interv.api.tender.model.TenderStatus;
 import com.markoni.interv.api.tender.query.OfferQuery;
 import com.markoni.interv.commons.error.NotFoundException;
 import com.markoni.interv.commons.page.PageResponse;
@@ -65,14 +66,19 @@ public class OfferServiceImpl implements OfferService {
         offer.setStatus(cmd.getStatus());
         offerRepository.save(offer);
 
+        // If the offer was accepted reject all other offers and close the tender
         if (cmd.getStatus() == OfferStatus.ACCEPTED) {
             offerRepository.rejectOffersExcluding(offer.getTender().getId(), offer.getId());
+
+            TenderEntity tender = offer.getTender();
+            tender.setStatus(TenderStatus.CLOSED);
+            tenderRepository.save(tender);
         }
         return offerMapper.map(offer);
     }
 
     @Override
-    public PageResponse<List<Offer>> search(OfferQuery query, PageableRequest pageable) {
+    public PageResponse<Offer> search(OfferQuery query, PageableRequest pageable) {
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
         Page<OfferEntity> searchResult = offerRepository.search(query, pageRequest);
         List<Offer> content = searchResult.getContent().stream().map(offerMapper::map).collect(Collectors.toList());

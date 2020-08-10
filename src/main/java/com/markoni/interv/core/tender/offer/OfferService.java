@@ -7,13 +7,11 @@ import com.markoni.interv.api.tender.query.OfferQuery;
 import com.markoni.interv.commons.page.PageResponse;
 import com.markoni.interv.commons.page.PageableRequest;
 
-import java.util.List;
-
 public interface OfferService {
 
     Offer create(CreateOfferCommand cmd);
 
     Offer update(String refNumber, UpdateOfferCommand cmd);
 
-    PageResponse<List<Offer>> search(OfferQuery query, PageableRequest request);
+    PageResponse<Offer> search(OfferQuery query, PageableRequest request);
 }

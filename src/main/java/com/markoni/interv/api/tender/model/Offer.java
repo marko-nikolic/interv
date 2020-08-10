@@ -9,6 +9,8 @@ import java.time.LocalDate;
 @Setter
 public class Offer {
 
+    private String referenceNumber;
+
     private LocalDate submissionDate;
 
     private Tender tender;

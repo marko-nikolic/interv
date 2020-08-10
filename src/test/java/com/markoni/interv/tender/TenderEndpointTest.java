@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.time.LocalDate;
 
@@ -81,5 +83,21 @@ class TenderEndpointTest {
         assertNotNull(result.getDeadline());
         assertNotNull(result.getDescription());
         assertEquals(result.getCreationDate(), LocalDate.now());
+    }
+
+    @DisplayName("Test search of tenders")
+    @Test
+    @Order(3)
+    void testSearch() throws Exception {
+        MockHttpServletRequestBuilder getRequest = get("/api/v1/tenders/search")
+            .param("pageNumber", "1")
+            .param("pageSize", "5")
+            .param("issuerIdNo", "CIN112233");
+
+        mockMvc
+            .perform(getRequest)
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content[0].issuer.identificationNumber").value("CIN112233"))
+            .andReturn();
     }
 }
