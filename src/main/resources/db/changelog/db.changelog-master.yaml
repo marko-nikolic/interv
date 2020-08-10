@@ -1,4 +1,57 @@
 databaseChangeLog:
-  - include:
-      file: db.changelog-1.0.yaml
-      relativeToChangelogFile: true
+  - changeSet:
+      id: 1
+      author: marko.nikolic
+      changes:
+        sqlFile:
+          path: ddl/issuer.sql
+          relativeToChangelogFile: true
+  - changeSet:
+      id: 2
+      author: marko.nikolic
+      changes:
+        sqlFile:
+          path: data/init_issuers.sql
+          relativeToChangelogFile: true
+  - changeSet:
+      id: 3
+      author: marko.nikolic
+      changes:
+        sqlFile:
+          path: ddl/tender.sql
+          relativeToChangelogFile: true
+  - changeSet:
+      id: 4
+      author: marko.nikolic
+      changes:
+        sqlFile:
+          path: ddl/bidder.sql
+          relativeToChangelogFile: true
+  - changeSet:
+      id: 5
+      author: marko.nikolic
+      changes:
+        sqlFile:
+          path: ddl/offer.sql
+          relativeToChangelogFile: true
+  - changeSet:
+      id: 6
+      author: marko.nikolic
+      changes:
+        sqlFile:
+          path: data/init_bidders.sql
+          relativeToChangelogFile: true
+  - changeSet:
+      id: 7
+      author: marko.nikolic
+      changes:
+        sqlFile:
+          path: data/init_tender.sql
+          relativeToChangelogFile: true
+  - changeSet:
+      id: 8
+      author: marko.nikolic
+      changes:
+        sqlFile:
+          path: data/init_offers.sql
+          relativeToChangelogFile: true

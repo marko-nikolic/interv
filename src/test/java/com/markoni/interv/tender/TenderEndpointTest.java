@@ -7,9 +7,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.markoni.interv.api.tender.CreateTenderCommand;
-import com.markoni.interv.api.tender.Tender;
-import com.markoni.interv.api.tender.TenderStatus;
+import com.markoni.interv.api.tender.command.CreateTenderCommand;
+import com.markoni.interv.api.tender.model.Tender;
+import com.markoni.interv.api.tender.model.TenderStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;

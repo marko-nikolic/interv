@@ -1,7 +1,7 @@
 package com.markoni.interv.core.tender;
 
-import com.markoni.interv.api.tender.CreateTenderCommand;
-import com.markoni.interv.api.tender.Tender;
+import com.markoni.interv.api.tender.command.CreateTenderCommand;
+import com.markoni.interv.api.tender.model.Tender;
 import com.markoni.interv.commons.error.NotFoundException;
 import com.markoni.interv.core.tender.issuer.IssuerEntity;
 import com.markoni.interv.core.tender.issuer.IssuerRepository;
@@ -33,9 +33,7 @@ public class TenderServiceImpl implements TenderService {
         // Retrieve existing issuer. Issuer must be already registered(in DB) in order to create Tender
         IssuerEntity issuer = issuerRepository
             .findByIdentificationNumber(cmd.getIssuerIdNumber())
-            .orElseThrow(() -> new NotFoundException(
-                "Issuer %s doesn't exist. Please register issuer before proceeding.",
-                cmd.getIssuerIdNumber()));
+            .orElseThrow(() -> new NotFoundException("Issuer %s doesn't exist.", cmd.getIssuerIdNumber()));
         tenderEntity.setIssuer(issuer);
 
         tenderRepository.save(tenderEntity);

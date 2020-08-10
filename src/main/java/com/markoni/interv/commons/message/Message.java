@@ -1,4 +1,4 @@
-package com.markoni.interv.commons.model;
+package com.markoni.interv.commons.message;
 
 import lombok.Builder;
 import lombok.Getter;

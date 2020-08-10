@@ -1,5 +1,7 @@
 package com.markoni.interv.api.tender;
 
+import com.markoni.interv.api.tender.command.CreateTenderCommand;
+import com.markoni.interv.api.tender.model.Tender;
 import com.markoni.interv.commons.error.NotFoundException;
 import com.markoni.interv.core.tender.TenderService;
 import lombok.RequiredArgsConstructor;

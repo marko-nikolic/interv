@@ -1,4 +1,4 @@
-package com.markoni.interv.api.tender;
+package com.markoni.interv.api.tender.model;
 
 import lombok.Getter;
 import lombok.Setter;

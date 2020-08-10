@@ -1,9 +1,8 @@
 package com.markoni.interv.commons.error;
 
-import com.markoni.interv.commons.model.Message;
-import com.markoni.interv.commons.model.MessageResponse;
-import com.markoni.interv.commons.model.Severity;
-import liquibase.util.StringUtils;
+import com.markoni.interv.commons.message.Message;
+import com.markoni.interv.commons.message.MessageResponse;
+import com.markoni.interv.commons.message.Severity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -33,6 +32,17 @@ public class ErrorHandler {
         Message m = Message.builder().severity(Severity.ERROR).message(ex.getMessage()).build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageResponse.of(m));
     }
+
+    /**
+     * Handles ExceptionValidation, e.g business validation, constraint issues
+     */
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<?> handleValidationException(ValidationException ex) {
+        log.error("Validation failed", ex);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessages());
+    }
+
 
     /**
      * Handles bad formatted json request

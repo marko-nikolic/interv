@@ -1,4 +1,4 @@
-package com.markoni.interv.api.tender;
+package com.markoni.interv.api.tender.command;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

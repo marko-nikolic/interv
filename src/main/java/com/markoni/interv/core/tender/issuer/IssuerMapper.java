@@ -1,6 +1,6 @@
 package com.markoni.interv.core.tender.issuer;
 
-import com.markoni.interv.api.tender.Issuer;
+import com.markoni.interv.api.tender.model.Issuer;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

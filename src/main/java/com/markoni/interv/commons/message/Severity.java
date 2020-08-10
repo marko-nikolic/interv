@@ -1,4 +1,4 @@
-package com.markoni.interv.commons.model;
+package com.markoni.interv.commons.message;
 
 /**
  * Describing severity of the {@link Message}

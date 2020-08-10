@@ -1,8 +1,8 @@
-package com.markoni.interv.commons.model;
+package com.markoni.interv.commons.message;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Collections;

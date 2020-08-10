@@ -1,6 +1,6 @@
 package com.markoni.interv.core.tender;
 
-import com.markoni.interv.api.tender.TenderStatus;
+import com.markoni.interv.api.tender.model.TenderStatus;
 import com.markoni.interv.core.tender.issuer.IssuerEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,7 +46,7 @@ public class TenderEntity {
     @JoinColumn(name = "issuer_id", nullable = false)
     private IssuerEntity issuer;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private TenderStatus status;
 
