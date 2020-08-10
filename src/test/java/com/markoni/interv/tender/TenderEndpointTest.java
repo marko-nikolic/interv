@@ -2,14 +2,13 @@ package com.markoni.interv.tender;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.markoni.interv.api.tender.CreateTenderCommand;
 import com.markoni.interv.api.tender.Tender;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -23,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -43,14 +41,21 @@ class TenderEndpointTest {
     @Test
     @Order(1)
     void testCreate() throws Exception {
-        CreateTenderCommand command = new CreateTenderCommand("Tender for new project", LocalDate.of(2020, 9, 1));
+        CreateTenderCommand command = CreateTenderCommand
+            .builder()
+            .issuerIdNumber("CIN112233")
+            .description("Tender for new project")
+            .deadline(LocalDate.of(2020, 9, 1))
+            .build();
+
         MvcResult res = mockMvc
-            .perform(post("/tenders").content(objectMapper.writeValueAsString(command)).contentType("application/json"))
+            .perform(post("/api/v1/tenders").content(objectMapper.writeValueAsString(command)).contentType("application/json"))
             .andExpect(status().isOk())
             .andReturn();
 
         Tender result = objectMapper.readValue(res.getResponse().getContentAsString(), Tender.class);
-        assertNotNull(result);
+        assertNotNull(result.getIssuer());
+        assertEquals(result.getIssuer().getIdentificationNumber(), "CIN112233");
         assertNotNull(result.getReferenceNumber());
         assertEquals(result.getDescription(), "Tender for new project");
         assertEquals(result.getCreationDate(), LocalDate.now());
@@ -63,12 +68,16 @@ class TenderEndpointTest {
     @Order(2)
     void testGet() throws Exception {
         MvcResult res = mockMvc
-            .perform(get("/tenders/"+refNo))
+            .perform(get("/api/v1/tenders/"+refNo))
             .andExpect(status().isOk())
             .andReturn();
 
         Tender result = objectMapper.readValue(res.getResponse().getContentAsString(), Tender.class);
         assertNotNull(result);
         assertEquals(result.getReferenceNumber(), refNo);
+        assertNotNull(result.getIssuer());
+        assertNotNull(result.getDeadline());
+        assertNotNull(result.getDescription());
+        assertEquals(result.getCreationDate(), LocalDate.now());
     }
 }

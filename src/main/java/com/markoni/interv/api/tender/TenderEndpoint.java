@@ -1,7 +1,6 @@
 package com.markoni.interv.api.tender;
 
 import com.markoni.interv.commons.error.NotFoundException;
-import com.markoni.interv.commons.model.Message;
 import com.markoni.interv.core.tender.TenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(path = "tenders")
+@RequestMapping(path = "api/v1/tenders")
 @RequiredArgsConstructor
 public class TenderEndpoint {
 

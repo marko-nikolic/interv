@@ -4,5 +4,19 @@ databaseChangeLog:
       author: marko.nikolic
       changes:
         sqlFile:
+          path: ddl/issuer.sql
+          relativeToChangelogFile: true
+  - changeSet:
+      id: 2
+      author: marko.nikolic
+      changes:
+        sqlFile:
+          path: data/init_issuers.sql
+          relativeToChangelogFile: true
+  - changeSet:
+      id: 3
+      author: marko.nikolic
+      changes:
+        sqlFile:
           path: ddl/tender.sql
           relativeToChangelogFile: true

@@ -15,10 +15,17 @@ CREATE SEQUENCE seq_tender_ref_no
 CREATE TABLE tender
 (
     id               NUMBER(19)          NOT NULL,
+    issuer_id        NUMBER(19)          NOT NULL,
     description      VARCHAR2(2000 CHAR) NOT NULL,
     reference_number VARCHAR2(50 CHAR)   NOT NULL,
     creation_date    DATE                NOT NULL,
     deadline         DATE                NOT NULL
 );
 
-CREATE UNIQUE INDEX index_name ON tender(reference_number);
+ALTER TABLE tender
+    ADD CONSTRAINT pk_tender_id PRIMARY KEY (id);
+
+ALTER TABLE tender
+    ADD CONSTRAINT fk_tender_issuer_id FOREIGN KEY (issuer_id) REFERENCES issuer (id);
+
+CREATE UNIQUE INDEX uq_tender_ref_no ON tender (reference_number);

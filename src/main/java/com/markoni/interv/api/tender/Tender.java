@@ -1,6 +1,5 @@
 package com.markoni.interv.api.tender;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,4 +16,6 @@ public class Tender {
     private LocalDate creationDate;
 
     private LocalDate deadline;
+
+    private Issuer issuer;
 }
